@@ -1,8 +1,10 @@
 {
     "version": "0.0.0",
+    "license": "ISC",
+    "//vue-tsc --noEmit && 在build里面加入检查 ": {},
     "scripts": {
         "dev": "vite",
-        "build": "vue-tsc --noEmit && vite build",
+        "build": "vite build",
         "serve": "vite preview"
     },
     "dependencies": {
@@ -13,6 +15,7 @@
         "vuex": "4"
     },
     "devDependencies": {
+        "@types/node": "^15.12.5",
         "@vitejs/plugin-legacy": "^1.4.2",
         "@vitejs/plugin-vue": "^1.2.3",
         "@vue/compiler-sfc": "^3.0.5",

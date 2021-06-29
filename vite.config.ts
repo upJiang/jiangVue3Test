@@ -4,6 +4,8 @@ import importerPlugin from 'vite-plugin-importer'; // <---
 import legacyPlugin from '@vitejs/plugin-legacy';
 import path from 'path';
 
+const { resolve } = require('path')
+
 export default defineConfig({
   css: {
     preprocessorOptions: {
@@ -46,4 +48,13 @@ export default defineConfig({
     },
     open: true,
   },
+  // 打包构建环境
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        nested: resolve(__dirname, 'nested/index.html')
+      }
+    }
+  }
 });
