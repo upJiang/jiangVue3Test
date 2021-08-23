@@ -8,11 +8,15 @@
         "serve": "vite preview"
     },
     "dependencies": {
+        "@sentry/tracing": "^6.11.0",
+        "@sentry/vue": "^6.11.0",
+        "add": "^2.0.6",
         "ant-design-vue": "^2.2.0-beta.6",
         "vue": "^3.0.5",
         "vue-i18n": "^9.1.6",
         "vue-router": "4",
-        "vuex": "4"
+        "vuex": "4",
+        "yarn": "^1.22.11"
     },
     "devDependencies": {
         "@types/node": "^15.12.5",

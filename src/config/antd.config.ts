@@ -5,6 +5,7 @@ const antdInstall: Plugin = function (app) { // 声明为中间件暴露，调�
     app.use(Button);
     app.config.globalProperties.$message = message;
 };
+
 export default antdInstall;
 declare module '@vue/runtime-core' {
     interface ComponentCustomProperties {

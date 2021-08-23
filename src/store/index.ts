@@ -1,6 +1,6 @@
 import {InjectionKey} from 'vue';
 import {createStore, Store} from 'vuex';
-import user, {State as UserState} from './user';
+import user, {State as UserState} from './modules/user';
 
 // 将各模块的State类型汇总
 export interface State {

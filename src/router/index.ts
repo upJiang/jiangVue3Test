@@ -1,13 +1,11 @@
-import {createRouter, createWebHashHistory, RouteRecordRaw} from 'vue-router';
-import Home from '../views/Home.vue';
+import {createRouter, createWebHashHistory} from 'vue-router';
+const moduleList = import.meta.globEager('./modules/**');
 
-const routes: Array<RouteRecordRaw> = [ // 加入类型声明可以约束配置项，提升书写体验
-    {
-        path: '/',
-        name: 'Home',
-        component: Home,
-    }
-];
+let routes = Object
+    .keys(moduleList).reduce<any[]>((pre, k) => [...pre, ...moduleList[k].default], []);
+// 去重
+routes = Array.from(new Set(routes))
+
 
 const router = createRouter({
     history: createWebHashHistory(),
