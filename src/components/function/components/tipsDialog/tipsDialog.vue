@@ -6,7 +6,7 @@
     @cancel="pageVisible = false"
     :okText="okText"
   >
-    自定义全局函数组件......
+    {{content}}
   </Modal>
 </template>
 
@@ -31,6 +31,10 @@ const props = defineProps({
     type: Function, //传入移除节点方法,这里是createApp中的方法
     default: null,
   },
+  content:{
+    type: String,
+    default: "自定义全局函数组件......",
+  }
 });
 
 const pageVisible = ref(false);
@@ -45,8 +49,7 @@ watch(
 
 // 确认
 const _sure = () => {
-  typeof props.onSuccess === "function" && props.handleOk();
+  typeof props.handleOk === "function" && props.handleOk("组件参数");
   pageVisible.value = false;
 };
-
 </script>

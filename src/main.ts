@@ -14,7 +14,7 @@ import d from "@/config/d";
 
 // 引入全局自定义函数组件
 import fc from "@/components/function/index"
-import useFunComponentInjs from '@/views/home';
+
 
 const app = createApp(App)
 
@@ -40,6 +40,5 @@ app.use(antd)
 app.use(globalVar)
 app.use(d)
 app.use(fc)
-app.use(useFunComponentInjs)
 app.mount('#app')
 

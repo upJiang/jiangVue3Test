@@ -9,6 +9,12 @@
     >点击抛出错误，测试sentry</a-button
   >
 
+  <div style="margin-top: 50px">
+    <b-button text="最简单的导入组件"
+      ></b-button
+    >
+  </div>
+
   <div style="margin-top: 20px">
     <d-back-button
       text="这是全局导入的自定义组件，不需要在页面中单独导入"
@@ -21,12 +27,21 @@
     >
   </div>
 
+  <div style="margin-top: 20px">
+    <a-button @click="clickMock"
+      >点击mock请求，并且在request.ts文件中使用自定义全局函数组件弹窗</a-button
+    >
+  </div>
+
+
+
 </template>
 <script setup>
 import { getCurrentInstance, computed } from "vue";
 import { useStore } from "vuex";
 import { key } from "@/store";
-import homeApi from "./home";
+import request  from "@/config/request";
+import BButton from '@/components/import/BButton.vue'
 
 const store = useStore(key); // 调用 vuex 的 Composition API 获取 store ，相当于 $store
 const age = computed(() => store.getters["user/age"]);
@@ -41,12 +56,16 @@ const clickThrowError = () => {
 
 const clickOpenFunComponent = () => {
   proxy.$TipsDialog({
-    handleOk: () => {
-      console.log("点击成功");
+    handleOk: (str) => {
+      console.log("点击成功，可以在此处做回调操作。"+str);
     },
   });
 };
 
-
+const clickMock = async () => {
+  await request({
+    url: '/mock/getUser',
+    method: "GET"
+  });
+};
 </script>
-<style scoped></style>
