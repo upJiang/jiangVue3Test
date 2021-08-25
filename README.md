@@ -8,7 +8,7 @@ less
 mock
 axios封装
 ant-design（按需加载）
-srntry
+sentry
 构建分包
 env
 ts的支持

@@ -10,9 +10,7 @@
   >
 
   <div style="margin-top: 50px">
-    <b-button text="最简单的导入组件"
-      ></b-button
-    >
+    <b-button text="最简单的导入组件"></b-button>
   </div>
 
   <div style="margin-top: 20px">
@@ -33,16 +31,19 @@
     >
   </div>
 
-
-
+  <div style="margin-top: 20px">
+    <a-button @click="router.push('/JsxTest')">点击跳转到Jsx测试页面</a-button>
+  </div>
 </template>
 <script setup>
 import { getCurrentInstance, computed } from "vue";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 import { key } from "@/store";
-import request  from "@/config/request";
-import BButton from '@/components/import/BButton.vue'
+import request from "@/config/request";
+import BButton from "@/components/import/BButton.vue";
 
+const router = useRouter();
 const store = useStore(key); // 调用 vuex 的 Composition API 获取 store ，相当于 $store
 const age = computed(() => store.getters["user/age"]);
 const addAge = () => store.dispatch("user/addAge", 1);
@@ -57,15 +58,15 @@ const clickThrowError = () => {
 const clickOpenFunComponent = () => {
   proxy.$TipsDialog({
     handleOk: (str) => {
-      console.log("点击成功，可以在此处做回调操作。"+str);
+      console.log("点击成功，可以在此处做回调操作。" + str);
     },
   });
 };
 
 const clickMock = async () => {
   await request({
-    url: '/mock/getUser',
-    method: "GET"
+    url: "/mock/getUser",
+    method: "GET",
   });
 };
 </script>

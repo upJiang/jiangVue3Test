@@ -1,8 +1,10 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
+import vueJsx from "@vitejs/plugin-vue-jsx";
 import importerPlugin from 'vite-plugin-importer'; // <---
 import legacyPlugin from '@vitejs/plugin-legacy';
 import { viteMockServe } from "vite-plugin-mock";
+
 
 import path from 'path';
 
@@ -18,6 +20,7 @@ export default defineConfig({
   },
   plugins: [
     vue(),
+    vueJsx(),
     importerPlugin({ 
       libraryName: "ant-design-vue",
       libraryDirectory: "es",
