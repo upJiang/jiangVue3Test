@@ -9,6 +9,8 @@ import globalVar from "./config/globalVar"
 import * as Sentry from "@sentry/vue";
 import { Integrations } from "@sentry/tracing";
 
+import  "jiang-mini-ele/lib/styles/index.css";
+
 // 引入全局自定义组件
 import d from "@/config/d";
 

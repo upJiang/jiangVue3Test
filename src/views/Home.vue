@@ -34,6 +34,10 @@
   <div style="margin-top: 20px">
     <a-button @click="router.push('/JsxTest')">点击跳转到Jsx测试页面</a-button>
   </div>
+
+  <div style="margin-top: 20px">
+    <my-button></my-button>
+  </div>
 </template>
 <script setup>
 import { getCurrentInstance, computed } from "vue";
@@ -42,6 +46,9 @@ import { useRouter } from "vue-router";
 import { key } from "@/store";
 import request from "@/config/request";
 import BButton from "@/components/import/BButton.vue";
+import  {MyButton}  from "jiang-mini-ele";
+
+console.log("MyButton0",MyButton)
 
 const router = useRouter();
 const store = useStore(key); // 调用 vuex 的 Composition API 获取 store ，相当于 $store
