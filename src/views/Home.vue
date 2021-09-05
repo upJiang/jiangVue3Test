@@ -46,9 +46,9 @@ import { useRouter } from "vue-router";
 import { key } from "@/store";
 import request from "@/config/request";
 import BButton from "@/components/import/BButton.vue";
-import  {MyButton}  from "jiang-mini-ele";
+import { MyButton } from "jiang-vui";
 
-console.log("MyButton0",MyButton)
+console.log("MyButton0", MyButton);
 
 const router = useRouter();
 const store = useStore(key); // 调用 vuex 的 Composition API 获取 store ，相当于 $store

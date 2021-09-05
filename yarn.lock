@@ -1283,10 +1283,10 @@ isarray@~1.0.0:
   resolved "https://registry.npmjs.org/isarray/-/isarray-1.0.0.tgz#bb935d48582cba168c06834957a54a3e07124f11"
   integrity sha1-u5NdSFgsuhaMBoNJV6VKPgcSTxE=
 
-jiang-mini-ele@^4.2.3:
-  version "4.2.3"
-  resolved "https://registry.npmjs.org/jiang-mini-ele/-/jiang-mini-ele-4.2.3.tgz#8eed6b5ab513b0f1c4f760fe091d9bed361fc099"
-  integrity sha512-g4DwBFgYe1QGfG/7uLoeGjEwVEzyChjUUwprICkS2yHuLTQ9/zwxwaOiM6+uuzMBYMx/V4MKTX2tfnOtQB6+bA==
+jiang-vui@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.npmjs.org/jiang-vui/-/jiang-vui-0.0.1.tgz#ce68aa684677c32ce6309cefebdd4de91175647f"
+  integrity sha512-+K/BUNZmLiISrvWFfzNFFeD5IKR+oUWoOBXyF0COkTf43BYdAIMKt6bpudApu1UXRk3L6DcpHFIWV5pXc3yTlQ==
   dependencies:
     vue ">=3.0.5"
 
