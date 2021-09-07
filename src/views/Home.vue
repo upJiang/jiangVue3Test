@@ -36,7 +36,8 @@
   </div>
 
   <div style="margin-top: 20px">
-    <my-button></my-button>
+    这是组件库jiang-vui的组件：
+    <my-button @submitCallback="submitCallback"></my-button>
   </div>
 </template>
 <script setup>
@@ -49,6 +50,9 @@ import BButton from "@/components/import/BButton.vue";
 import { MyButton } from "jiang-vui";
 
 console.log("MyButton0", MyButton);
+const submitCallback = ()=>{
+  console.log("组件库点击回调");
+}
 
 const router = useRouter();
 const store = useStore(key); // 调用 vuex 的 Composition API 获取 store ，相当于 $store
