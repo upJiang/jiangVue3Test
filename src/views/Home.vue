@@ -1,5 +1,5 @@
 <template>
-  <!-- <p>测试i18n：{{ $t("message.hello") }}</p>
+  <p>测试i18n：{{ $t("message.hello") }}</p>
   <span>测试vuex：{{ age }}</span>
   <a-button type="primary" @click="addAge" style="margin-left: 26px"
     >点击age++(这是ant-design组件)</a-button
@@ -33,7 +33,7 @@
 
   <div style="margin-top: 20px">
     <a-button @click="router.push('/JsxTest')">点击跳转到Jsx测试页面</a-button>
-  </div> -->
+  </div>
 
   <div style="margin-top: 20px">
     这是组件库jiang-vui的组件：
