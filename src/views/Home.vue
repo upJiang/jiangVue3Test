@@ -1,5 +1,5 @@
 <template>
-  <p>测试i18n：{{ $t("message.hello") }}</p>
+  <!-- <p>测试i18n：{{ $t("message.hello") }}</p>
   <span>测试vuex：{{ age }}</span>
   <a-button type="primary" @click="addAge" style="margin-left: 26px"
     >点击age++(这是ant-design组件)</a-button
@@ -33,7 +33,7 @@
 
   <div style="margin-top: 20px">
     <a-button @click="router.push('/JsxTest')">点击跳转到Jsx测试页面</a-button>
-  </div>
+  </div> -->
 
   <div style="margin-top: 20px">
     这是组件库jiang-vui的组件：
@@ -59,8 +59,8 @@ const store = useStore(key); // 调用 vuex 的 Composition API 获取 store ，
 const age = computed(() => store.getters["user/age"]);
 const addAge = () => store.dispatch("user/addAge", 1);
 const { proxy } = getCurrentInstance();
-console.log("全局变量 $TRACK", proxy.$TRACK);
-console.log("env变量VITE_BASE_URL", import.meta.env.VITE_BASE_URL);
+// console.log("全局变量 $TRACK", proxy.$TRACK);
+// console.log("env变量VITE_BASE_URL", import.meta.env.VITE_BASE_URL);
 
 const clickThrowError = () => {
   throw new Error("抛出错误");
