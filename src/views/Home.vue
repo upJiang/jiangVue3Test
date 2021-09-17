@@ -1,5 +1,5 @@
 <template>
-  <p>测试i18n：{{ $t("message.hello") }}</p>
+  <p style="margin-top: 20px;">测试i18n：{{ $t("message.hello") }}</p>
   <span>测试vuex：{{ age }}</span>
   <a-button type="primary" @click="addAge" style="margin-left: 26px"
     >点击age++(这是ant-design组件)</a-button
@@ -30,6 +30,9 @@
       >点击mock请求，并且在request.ts文件中使用自定义全局函数组件弹窗</a-button
     >
   </div>
+  <div style="margin-top: 20px">
+    <a-button @click="clickAllLoading">点击测试多个请求实现loading</a-button>
+  </div>
 
   <div style="margin-top: 20px">
     <a-button @click="router.push('/JsxTest')">点击跳转到Jsx测试页面</a-button>
@@ -48,11 +51,12 @@ import { key } from "@/store";
 import request from "@/config/request";
 import BButton from "@/components/import/BButton.vue";
 import { MyButton } from "jiang-vui";
+import { requestTest1, requestTest2 } from "@/api/apiTest";
 
 console.log("MyButton0", MyButton);
-const submitCallback = ()=>{
+const submitCallback = () => {
   console.log("组件库点击回调");
-}
+};
 
 const router = useRouter();
 const store = useStore(key); // 调用 vuex 的 Composition API 获取 store ，相当于 $store
@@ -78,6 +82,15 @@ const clickMock = async () => {
   await request({
     url: "/mock/getUser",
     method: "GET",
+  });
+};
+
+const clickAllLoading = () => {
+  requestTest1({}, true).then((res) => {
+    console.log("请求1完成",res);
+  });
+  requestTest2({}, true).then((res) => {
+    console.log("请求2完成",res);
   });
 };
 </script>

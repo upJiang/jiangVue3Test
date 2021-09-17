@@ -5,14 +5,13 @@ export const getTest = (params: object) => {
   return request({
     url: `${url}/test`,
     method: "GET",
-    params
+    params,
   });
 };
 
-
 export const postTest = (data: object) => {
   return request({
-    url: `${url}test`,
+    url: `${url}/test`,
     method: "POST",
     data,
   });
@@ -24,4 +23,26 @@ export const putTest = (data: object) => {
     method: "PUT",
     data,
   });
+};
+
+export const requestTest1 = (data: object, loading = false) => {
+  return request(
+    {
+      url: "/mock/getUser",
+      method: "GET",
+      data,
+    },
+    loading
+  );
+};
+
+export const requestTest2 = (data: object, loading = false) => {
+  return request(
+    {
+      url: "/mock/getUser",
+      method: "GET",
+      data,
+    },
+    loading
+  );
 };
