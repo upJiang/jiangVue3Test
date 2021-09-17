@@ -4,11 +4,7 @@ import vueJsx from "@vitejs/plugin-vue-jsx";
 import importerPlugin from 'vite-plugin-importer'; // <---
 import legacyPlugin from '@vitejs/plugin-legacy';
 import { viteMockServe } from "vite-plugin-mock";
-
-
 import path from 'path';
-
-const { resolve } = require('path')
 
 export default defineConfig({
   css: {
@@ -53,13 +49,17 @@ export default defineConfig({
       },
     },
     open: true,
+    // vite vue3项目Unrestricted file system access to
+    fs: {
+      strict: false
+    }
   },
   // 打包构建环境
   build: {
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
-        nested: resolve(__dirname, 'nested/index.html')
+        main: path.resolve(__dirname, 'index.html'),
+        nested: path.resolve(__dirname, 'nested/index.html')
       }
     }
   }
