@@ -1,4 +1,4 @@
-Vue 3 + Typescript + Vite
+Vue 3 + Vite + ts 
 
 目前引入了:
 i18n
@@ -6,7 +6,7 @@ vuex
 v-router
 less
 mock
-axios封装
+axios封装（包括多个请求的loading处理）
 ant-design（按需加载）
 sentry
 构建分包
