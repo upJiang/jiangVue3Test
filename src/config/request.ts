@@ -12,10 +12,6 @@ const startLoading = () => {
   reqNum++;
 };
 const endLoading = () => {
-  // 合并300ms内的请求
-  setTimeout(closeLoading, 300);
-};
-const closeLoading = () => {
   if (reqNum <= 0) return;
   reqNum--;
   if (reqNum === 0) {
@@ -62,16 +58,22 @@ instance.interceptors.response.use(
   }
 );
 
-const request = (options: AxiosRequestConfig = {}, loading = false) => {
+const request = (
+  options: AxiosRequestConfig = {},
+  loading = false,
+  delay = false
+) => {
   loading && startLoading();
   return new Promise<ApiResult>((resolve, reject) => {
     instance(options)
       .then((response: AxiosResponse) => {
-        // 模拟请求延迟
-        setTimeout(() => {
-          endLoading();
-        }, 2000);
-
+         //结束loading，如果穿了delay为true，则延迟150ms用于合并下一个串行请求
+         setTimeout(
+          () => {
+            endLoading();
+          },
+          delay ? 150 : 0
+        );
         if (response?.status === 200) {
           // 想要测试函数组件，把这个展开
           // funComponentList.$TipsDialog({
@@ -94,6 +96,7 @@ const request = (options: AxiosRequestConfig = {}, loading = false) => {
         } else {
           return Promise.reject(response);
         }
+        
       })
       .catch((result) => {
         if (result?.status === 200) {
@@ -115,7 +118,13 @@ const request = (options: AxiosRequestConfig = {}, loading = false) => {
             description: result?.message,
           });
         }
-        endLoading();
+         //结束loading，如果穿了delay为true，则延迟150ms用于合并下一个串行请求
+        setTimeout(
+          () => {
+            endLoading();
+          },
+          delay ? 150 : 0
+        );
         reject(result);
       });
   });

@@ -1,5 +1,5 @@
 <template>
-  <p style="margin-top: 20px;">测试i18n：{{ $t("message.hello") }}</p>
+  <p style="margin-top: 20px">测试i18n：{{ $t("message.hello") }}</p>
   <span>测试vuex：{{ age }}</span>
   <a-button type="primary" @click="addAge" style="margin-left: 26px"
     >点击age++(这是ant-design组件)</a-button
@@ -84,13 +84,24 @@ const clickMock = async () => {
     method: "GET",
   });
 };
-
 const clickAllLoading = () => {
+  // 模拟串行,如果是串行请求，需要在所有非最后一个请求中加delay为true，传两个true，下面跟使用await是一样的
+  requestTest1({}, true, true).then((res) => {
+    console.log("请求1完成", res);
+    //模拟增加延迟，因为我这个是假的请求，使用的mock
+    setTimeout(() => {
+      requestTest2({}, true).then((res) => {
+        console.log("请求2完成", res);
+      });
+    }, 50);
+  });
+
+  // 模拟并行
   requestTest1({}, true).then((res) => {
-    console.log("请求1完成",res);
+    console.log("请求1完成", res);
   });
   requestTest2({}, true).then((res) => {
-    console.log("请求2完成",res);
+    console.log("请求2完成", res);
   });
 };
 </script>

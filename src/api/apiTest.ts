@@ -25,14 +25,15 @@ export const putTest = (data: object) => {
   });
 };
 
-export const requestTest1 = (data: object, loading = false) => {
+export const requestTest1 = (data: object, loading = false, delay = false) => {
   return request(
     {
       url: "/mock/getUser",
       method: "GET",
       data,
     },
-    loading
+    loading,
+    delay
   );
 };
 
