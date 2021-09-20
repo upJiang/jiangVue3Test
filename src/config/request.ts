@@ -67,8 +67,8 @@ const request = (
   return new Promise<ApiResult>((resolve, reject) => {
     instance(options)
       .then((response: AxiosResponse) => {
-         //结束loading，如果穿了delay为true，则延迟150ms用于合并下一个串行请求
-         setTimeout(
+        //结束loading，如果穿了delay为true，则延迟150ms用于合并下一个串行请求
+        setTimeout(
           () => {
             endLoading();
           },
@@ -96,7 +96,6 @@ const request = (
         } else {
           return Promise.reject(response);
         }
-        
       })
       .catch((result) => {
         if (result?.status === 200) {
@@ -118,13 +117,8 @@ const request = (
             description: result?.message,
           });
         }
-         //结束loading，如果穿了delay为true，则延迟150ms用于合并下一个串行请求
-        setTimeout(
-          () => {
-            endLoading();
-          },
-          delay ? 150 : 0
-        );
+        //结束loading，如果穿了delay为true，则延迟150ms用于合并下一个串行请求
+        endLoading();
         reject(result);
       });
   });
