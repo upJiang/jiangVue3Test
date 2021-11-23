@@ -68,7 +68,7 @@ const request = (
     instance(options)
       .then((response: AxiosResponse) => {
         //结束loading，如果穿了delay为true，则延迟150ms用于合并下一个串行请求
-        setTimeout(
+        loading && setTimeout(
           () => {
             endLoading();
           },
