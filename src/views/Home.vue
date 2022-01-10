@@ -1,5 +1,5 @@
 <template>
-  <p style="margin-top: 20px">测试i18n：{{ $t("message.hello") }}</p>
+  <p style="margin-top: 20px">测试i18n：{{ $t('message.hello') }}</p>
   <span>测试vuex：{{ age }}</span>
   <a-button type="primary" @click="addAge" style="margin-left: 26px"
     >点击age++(这是ant-design组件)</a-button
@@ -14,15 +14,11 @@
   </div>
 
   <div style="margin-top: 20px">
-    <d-back-button
-      text="这是全局导入的自定义组件，不需要在页面中单独导入"
-    ></d-back-button>
+    <d-back-button text="这是全局导入的自定义组件，不需要在页面中单独导入"></d-back-button>
   </div>
 
   <div style="margin-top: 20px">
-    <a-button @click="clickOpenFunComponent"
-      >这是自定义全局函数组件，点击打开</a-button
-    >
+    <a-button @click="clickOpenFunComponent">这是自定义全局函数组件，点击打开</a-button>
   </div>
 
   <div style="margin-top: 20px">
@@ -44,64 +40,65 @@
   </div>
 </template>
 <script setup>
-import { getCurrentInstance, computed } from "vue";
-import { useStore } from "vuex";
-import { useRouter } from "vue-router";
-import { key } from "@/store";
-import request from "@/config/request";
-import BButton from "@/components/import/BButton.vue";
-import { MyButton } from "jiang-vui";
-import { requestTest1, requestTest2 } from "@/api/apiTest";
+import { getCurrentInstance, computed } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+import { key } from '@/store'
+import request from '@/config/request'
+import BButton from '@/components/import/BButton.vue'
+import { MyButton } from 'jiang-vui'
+import { requestTest1, requestTest2 } from '@/api/apiTest'
 
-console.log("MyButton0", MyButton);
+console.log('MyButton0', MyButton)
 const submitCallback = () => {
-  console.log("组件库点击回调");
-};
+  console.log('组件库点击回调')
+}
 
-const router = useRouter();
-const store = useStore(key); // 调用 vuex 的 Composition API 获取 store ，相当于 $store
-const age = computed(() => store.getters["user/age"]);
-const addAge = () => store.dispatch("user/addAge", 1);
-const { proxy } = getCurrentInstance();
+const router = useRouter()
+const store = useStore(key) // 调用 vuex 的 Composition API 获取 store ，相当于 $store
+const age = computed(() => store.getters['user/age'])
+const addAge = () => store.dispatch('user/addAge', 1)
+const { proxy } = getCurrentInstance()
 // console.log("全局变量 $TRACK", proxy.$TRACK);
 // console.log("env变量VITE_BASE_URL", import.meta.env.VITE_BASE_URL);
 
 const clickThrowError = () => {
-  throw new Error("抛出错误");
-};
+  throw new Error('抛出错误')
+}
 
 const clickOpenFunComponent = () => {
   proxy.$TipsDialog({
-    handleOk: (str) => {
-      console.log("点击成功，可以在此处做回调操作。" + str);
-    },
-  });
-};
+    handleOk: str => {
+      console.log('点击成功，可以在此处做回调操作。' + str)
+    }
+  })
+}
 
 const clickMock = async () => {
   await request({
-    url: "/mock/getUser",
-    method: "GET",
-  });
-};
+    url: '/mock/getUser',
+    method: 'GET'
+  })
+}
+
 const clickAllLoading = () => {
   // 模拟串行,如果是串行请求，需要在所有非最后一个请求中加delay为true，传两个true，下面跟使用await是一样的
-  requestTest1({}, true, true).then((res) => {
-    console.log("请求1完成", res);
+  requestTest1({}, true, true).then(res => {
+    console.log('请求1完成', res)
     //模拟增加延迟，因为我这个是假的请求，使用的mock
     setTimeout(() => {
-      requestTest2({}, true).then((res) => {
-        console.log("请求2完成", res);
-      });
-    }, 50);
-  });
+      requestTest2({}, true).then(res => {
+        console.log('请求2完成', res)
+      })
+    }, 50)
+  })
 
   // 模拟并行
-  requestTest1({}, true).then((res) => {
-    console.log("请求1完成", res);
-  });
-  requestTest2({}, true).then((res) => {
-    console.log("请求2完成", res);
-  });
-};
+  requestTest1({}, true).then(res => {
+    console.log('请求1完成', res)
+  })
+  requestTest2({}, true).then(res => {
+    console.log('请求2完成', res)
+  })
+}
 </script>

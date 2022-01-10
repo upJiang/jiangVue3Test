@@ -14,3 +14,10 @@ env
 ts的支持
 三种封装组件的形式
 husky
+
+vscode 必须的插件安装
+
+Eslint
+Volar
+Prettier
+Stylelint (0.78.6)
