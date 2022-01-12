@@ -10,23 +10,33 @@ module.exports = {
   parserOptions: {
     parser: '@typescript-eslint/parser'
   },
-
+  globals: {
+    wx: 'readonly'
+  },
   rules: {
     'prettier/prettier': [
       'error',
       {
+        tabWidth: 2,
         singleQuote: true,
         semi: false,
-        trailingComma: 'none',
+        trailingComma: 'es5',
         arrowParens: 'avoid',
-        printWidth: 100,
-        endOfLine: 'auto'
+        endOfLine: 'auto',
+        printWidth: 100
       }
     ],
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'comma-dangle': 0,
-    quotes: 0,
+    'no-debugger': 'error',
+    'comma-dangle': [
+      'error',
+      {
+        arrays: 'always-multiline',
+        objects: 'always-multiline',
+        imports: 'always-multiline',
+        exports: 'never',
+        functions: 'never'
+      }
+    ],
     'vue/no-use-v-if-with-v-for': [
       'error',
       {
@@ -35,6 +45,8 @@ module.exports = {
     ],
     '@typescript-eslint/no-explicit-any': ['error'], //禁止使用any
     eqeqeq: 2, //必须使用全等
-    'max-lines': ['error', 500] //限制行数
+    'max-lines': ['error', 1000], //限制行数 请勿修改 请优化你的代码
+    complexity: ['error', 5], // 限制复杂度
+    'require-await': 'error'
   }
 }
