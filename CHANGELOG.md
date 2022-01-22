@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/upJiang/jiangVue3Test/compare/v1.1.0...v1.2.0) (2022-01-22)
+
+
+### Features
+
+* 更新readme ([4920d7a](https://github.com/upJiang/jiangVue3Test/commit/4920d7a8622e9ca14edb3ede9e0c71dd19abaa25))
+
 # [1.1.0](https://github.com/upJiang/jiangVue3Test/compare/v1.0.0...v1.1.0) (2022-01-22)
 
 
