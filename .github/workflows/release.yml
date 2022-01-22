@@ -15,7 +15,6 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
-          cache: npm
           node-version: 16
       - name: Install
         run: yarn
