@@ -1,6 +1,6 @@
 {
     "name": "jiangvuetest",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "license": "ISC",
     "//vue-tsc --noEmit && 在build里面加入检查 ": {},
     "scripts": {
