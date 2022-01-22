@@ -1,26 +1,21 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es5",
     "module": "esnext",
-    "moduleResolution": "node",
-    "strict": true, //开启会有许多没有给类型的报错，为false会自动any
+    "strict": true,
     "jsx": "preserve",
-    "sourceMap": true,
-    "resolveJsonModule": true,
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "allowJs": true,
     "esModuleInterop": true,
-    "lib": ["esnext", "dom"],
-    "allowJs":true,
-    "noImplicitAny": false,  // 不允许隐式的any类型
-    "baseUrl": "./", // 解析非相对模块的基地址，默认是当前目录
-    "paths": {  // 路径映射，相对于baseUrl
-      "@/*": [
-        "src/*"
-      ]
-    }
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
-  "include": ["./**/*.ts","src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
-   // 排除不需要 TypeScript 校验的文件
-   "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "tests/**/*.ts", "tests/**/*.tsx"],
+  "exclude": ["node_modules"]
 }

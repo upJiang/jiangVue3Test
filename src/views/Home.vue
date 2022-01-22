@@ -39,7 +39,7 @@
     <my-button @submitCallback="submitCallback"></my-button>
   </div>
 </template>
-<script setup>
+<script lang="ts" setup>
 import { getCurrentInstance, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
@@ -70,14 +70,14 @@ const clickOpenFunComponent = () => {
   proxy.$TipsDialog({
     handleOk: str => {
       console.log('点击成功，可以在此处做回调操作。' + str)
-    }
+    },
   })
 }
 
 const clickMock = async () => {
   await request({
     url: '/mock/getUser',
-    method: 'GET'
+    method: 'GET',
   })
 }
 
@@ -101,4 +101,8 @@ const clickAllLoading = () => {
     console.log('请求2完成', res)
   })
 }
+
+// let flag: null | undefined | string
+// flag!.toString() // ok
+// flag.toString() // error
 </script>
