@@ -4,8 +4,8 @@
 # lint
 yarn lint
 echo "---检查开始---"
-yarn tsc
-echo "---检查结束---"
+# yarn tsc
+# echo "---检查结束---"
 
 # EMAIL=$(git config user.email)
 # if [[ ! $EMAIL =~ ^[.[:alnum:]]+@qq\.com$ ]];
