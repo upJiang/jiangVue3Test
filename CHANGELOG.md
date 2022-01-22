@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/upJiang/jiangVue3Test/compare/v1.0.0...v1.1.0) (2022-01-22)
+
+
+### Features
+
+* uuuuuu ([8ace6ce](https://github.com/upJiang/jiangVue3Test/commit/8ace6ce97d66c9cb72d96aa649c9d494f20746a4))
+
 # 1.0.0 (2022-01-22)
 
 ### Bug Fixes
