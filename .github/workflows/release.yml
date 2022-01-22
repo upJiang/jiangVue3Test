@@ -15,9 +15,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
+          cache: npm
           node-version: 16
       - name: Install dependencies
-        run: yarn ci
+        run: npm ci
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
