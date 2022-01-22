@@ -10,7 +10,6 @@
         "lint": "lint-staged"
     },
     "dependencies": {
-        "@semantic-release/changelog": "^6.0.1",
         "@sentry/tracing": "^6.11.0",
         "@sentry/vue": "^6.11.0",
         "ant-design-vue": "2.2.1",
@@ -52,6 +51,7 @@
         "vite": "^2.3.8",
         "vite-plugin-importer": "^0.2.3",
         "vite-plugin-mock": "^2.4.0",
-        "vue-tsc": "^0.2.2"
+        "vue-tsc": "^0.2.2",
+        "@semantic-release/changelog": "^6.0.1"
     }
 }

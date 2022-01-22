@@ -1,18 +1,25 @@
 name: Release
-'on':
+on:
   push:
     branches:
       - main
 jobs:
   release:
-    name: release
-    runs-on: ubuntu-latest
+    name: Release
+    runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - name: Checkout
+        uses: actions/checkout@v2
         with:
-          cache: npm
+          fetch-depth: 0
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
           node-version: 16
-      - run: npx semantic-release
+      - name: Install dependencies
+        run: npm ci
+      - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release
