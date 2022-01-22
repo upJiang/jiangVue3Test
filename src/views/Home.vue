@@ -55,7 +55,7 @@ const submitCallback = () => {
 }
 
 const router = useRouter()
-const store = useStore(key) // 调用 vuex 的 Composition API 获取 store ，相当于 $store 发
+const store = useStore(key) // 调用 vuex 的 Composition API 获取 store ，相当于 $store
 const age = computed(() => store.getters['user/age'])
 const addAge = () => store.dispatch('user/addAge', 1)
 const { proxy } = getCurrentInstance()
