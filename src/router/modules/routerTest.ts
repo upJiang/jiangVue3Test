@@ -9,4 +9,9 @@ export default [
         name: 'JsxTest',
         component: () => import('@/views/JsxTest.vue'),
     },
+    {
+        path: '/mayi',
+        name: 'mayi',
+        component: () => import('@/views/mayi.vue'),
+    },
 ]
