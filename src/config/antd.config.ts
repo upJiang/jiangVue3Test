@@ -1,16 +1,17 @@
-import { Plugin } from "vue";
-import { Button, message, Spin } from "ant-design-vue";
+import { Plugin } from 'vue'
+import { Button, message, Spin, Input } from 'ant-design-vue'
 
-const antdInstall: Plugin = function (app) {    
+const antdInstall: Plugin = function (app) {
   // 声明为中间件暴露，调用时更优雅
-  app.use(Button );
-  app.use(Spin);
-  app.config.globalProperties.$message = message;
-};
+  app.use(Button)
+  app.use(Spin)
+  app.use(Input)
+  app.config.globalProperties.$message = message
+}
 
-export default antdInstall;
-declare module "@vue/runtime-core" {
+export default antdInstall
+declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
-    $message: typeof message;
+    $message: typeof message
   }
 }

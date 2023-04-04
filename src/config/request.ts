@@ -1,30 +1,30 @@
-import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
-import { getCookie } from "@/utils/cookie";
-import { notification } from "ant-design-vue";
-import { funComponentList } from "@/components/function/index";
-import { store } from "@/store/index";
+import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
+import { getCookie } from '@/utils/cookie'
+import { notification } from 'ant-design-vue'
+import { store } from '@/store/index'
 
-let reqNum = 0;
+let reqNum = 0
 const startLoading = () => {
   if (reqNum === 0) {
-    store.commit("common/setLoading", true);
+    store.commit('common/setLoading', true)
   }
-  reqNum++;
-};
+  reqNum++
+}
 const endLoading = () => {
-  if (reqNum <= 0) return;
-  reqNum--;
+  if (reqNum <= 0) return
+  reqNum--
   if (reqNum === 0) {
-    store.commit("common/setLoading", false);
+    store.commit('common/setLoading', false)
   }
-};
+}
 
 interface ApiResult {
-  code: number;
-  message: string;
-  result?: any;
+  code: number
+  message: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  result?: any
 }
-const token = getCookie("access_token");
+const token = getCookie('access_token')
 
 const instance = axios.create({
   // 超时时间 1 分钟
@@ -32,48 +32,46 @@ const instance = axios.create({
   timeout: 60000,
   headers: {
     Authorization: `Bearer ${token}`,
-    "x-client": "web",
-    "Content-Type": "application/json;charset=UTF-8",
+    'x-client': 'web',
+    'Content-Type': 'application/json;charset=UTF-8',
     token,
   },
-});
+})
 
 instance.interceptors.request.use(
   (config: AxiosRequestConfig) => {
     config.headers = {
       ...config.headers,
-    };
-    return config;
+    }
+    config.proxy = config.proxy || undefined
+    return config
   },
   (err: AxiosError) => {
-    Promise.reject(err);
+    Promise.reject(err)
   }
-);
+)
 instance.interceptors.response.use(
   (response: AxiosResponse) => {
-    return response;
+    return response
   },
   (err: AxiosError) => {
-    return Promise.reject(err);
+    return Promise.reject(err)
   }
-);
+)
 
-const request = (
-  options: AxiosRequestConfig = {},
-  loading = false,
-  delay = false
-) => {
-  loading && startLoading();
+const request = (options: AxiosRequestConfig = {}, loading = false, delay = false) => {
+  loading && startLoading()
   return new Promise<ApiResult>((resolve, reject) => {
     instance(options)
       .then((response: AxiosResponse) => {
         //结束loading，如果穿了delay为true，则延迟150ms用于合并下一个串行请求
-        loading && setTimeout(
-          () => {
-            endLoading();
-          },
-          delay ? 150 : 0
-        );
+        loading &&
+          setTimeout(
+            () => {
+              endLoading()
+            },
+            delay ? 150 : 0
+          )
         if (response?.status === 200) {
           // 想要测试函数组件，把这个展开
           // funComponentList.$TipsDialog({
@@ -83,44 +81,44 @@ const request = (
           //   },
           // });
           // 临时使用mock数据 使用mock数据 不验证code,这个是远程mock
-          if (options.url?.includes("mock")) {
-            const res: ApiResult = response.data;
-            return resolve(res);
+          if (options.url?.includes('mock')) {
+            const res: ApiResult = response.data
+            return resolve(res)
           } else {
-            if (response?.data?.code === 0) {
-              return resolve(response.data);
+            if (response?.data?.code === 0 || response?.data?.code === 1) {
+              return resolve(response.data)
             } else {
-              return Promise.reject(response);
+              return Promise.reject(response)
             }
           }
         } else {
-          return Promise.reject(response);
+          return Promise.reject(response)
         }
       })
-      .catch((result) => {
+      .catch(result => {
         if (result?.status === 200) {
           // code 非 0 情况
           notification.error({
             message: `接口错误:code值为：${result?.data?.code}`,
             description: JSON.stringify(result?.data?.message),
-          });
+          })
         } else if (result?.status && result?.status !== 200) {
           // 状态码非200情况
           notification.error({
             message: `请求错误:http状态码${result?.status}`,
             description: JSON.stringify(result?.message),
-          });
+          })
         } else {
           // 其他情况
           notification.error({
-            message: "接口错误2",
+            message: '接口错误2',
             description: result?.message,
-          });
+          })
         }
         //结束loading，如果穿了delay为true，则延迟150ms用于合并下一个串行请求
-        endLoading();
-        reject(result);
-      });
-  });
-};
-export default request;
+        endLoading()
+        reject(result)
+      })
+  })
+}
+export default request
