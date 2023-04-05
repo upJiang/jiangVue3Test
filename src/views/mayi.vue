@@ -12,12 +12,20 @@
         placeholder="请输入密码"
         v-model:value="password"
       ></a-input>
+      <!-- <div style="color: grey; margin-top: 4px">密码跟验证码登录二选一</div> -->
     </div>
+    <!-- <div>
+      <span>验证码：</span>
+      <a-input class="mayi-input" placeholder="请输入验证码" v-model:value="smsCode"></a-input>
+      <a-button @click="onSendSms" class="btn" type="primary" style="margin-left: 20px"
+        >发送验证码</a-button
+      >
+    </div> -->
 
     <div>
       <a-button @click="onLogin" class="btn" type="primary">登录</a-button>
       <span style="margin-left: 20px; color: grey">{{
-        isLogin ? '已登录' : '操作之前请先登录'
+        isLogin ? `已登录` : '操作之前请先登录'
       }}</span>
     </div>
 
@@ -30,22 +38,16 @@
     <span v-if="goodsId">已为您查找到该藏品：{{ goodsName }}，您可点击发起锁单</span>
 
     <div class="oprate-item">
-      <span> 最低价： </span>
-      <a-input class="mayi-input" placeholder="请输入最低价" v-model:value="minPrice"></a-input>
-      <div style="color: grey; margin-top: 4px">不输入最低价，价格升序查找</div>
-    </div>
-
-    <div class="oprate-item">
-      <span> 钱包类型： </span>
-      <a-input class="mayi-input" placeholder="请输入钱包类型" v-model:value="incomeType"></a-input>
-      <div style="color: grey; margin-top: 4px">钱包类型默认易宝，示例：易宝、汇付</div>
+      <span> 最高价： </span>
+      <a-input class="mayi-input" placeholder="请输入最高价" v-model:value="maxPrice"></a-input>
+      <div style="color: grey; margin-top: 4px">不输入最高价，价格升序查找</div>
     </div>
 
     <div class="oprate-item">
       <span> 请求间隔： </span>
       <a-input class="mayi-input" placeholder="请输入请求间隔" v-model:value="sleepTime"></a-input>
       <div style="color: grey; margin-top: 4px">
-        间隔默认 2200 毫秒请求一次，间隔太短容易请求频繁，建议设置 2000 以上
+        间隔默认 {{ sleepTime }} 毫秒请求一次，间隔太短容易请求频繁，建议设置 2000 以上
       </div>
     </div>
 
@@ -54,11 +56,10 @@
     <div style="color: grey; margin-top: 4px">
       {{
         isSuccess
-          ? `锁单成功：请尽快打开蚂蚁待支付订单进行支付`
-          : '发起锁单后将每隔3秒查询一次，直到查找到为止'
+          ? `下单成功：请尽快打开蚂蚁待支付订单进行支付`
+          : `发起锁单后将每隔${sleepTime}毫秒查询一次，直到查找到为止`
       }}
     </div>
-    <a :href="payUrl.value" v-if="payUrl.value">请点击支付</a>
   </div>
 </template>
 <script setup>
@@ -67,30 +68,59 @@ import request from '@/config/request'
 import { setCookie, getCookie } from '@/utils/cookie'
 import { message } from 'ant-design-vue'
 
-const isLogin = ref(false)
-const phone = ref('')
-const password = ref('')
-const goodsName = ref('')
-const goodsId = ref('')
-const newToken = ref('')
-const minPrice = ref() // 最低价
-const incomeType = ref('易宝')
-const flag = ref(false)
-const currentPage = ref(1)
-const isSuccess = ref(false) // 是否成功
-const payUrl = ref('') // 支付链接
-const isStop = ref(false) // 是否停止
-const isLoading = ref(false) // 是否在加载
-
+const isLogin = ref(false) // 是否登录
+const smsCode = ref('') // 验证码
+const phone = ref('') // 手机号
+const password = ref('') // 密码
+const goodsName = ref('') // 藏品名称
+const goodsId = ref('') // 藏品id
+const maxPrice = ref() // 最高价
+const currentPage = ref(1) // 当前请求页数
 const sleepTime = ref(2200) // 间隔时长
 
-// 阻塞
-function sleep(ms) {
+const incomeTypeArr = [] // 用户支持的钱包数组
+
+const isLoading = ref(false) // 是否在请求
+const isSuccess = ref(false) // 是否成功
+const inStop = ref(false) // 强制暂停
+
+// 阻塞，间隔
+const sleep = ms => {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
+// 重新加载列表
+const reloadList = async () => {
+  if (inStop.value) {
+    inStop.value = false
+    isLoading.value = false
+    isSuccess.value = false
+    currentPage.value = 1
+    return
+  }
+  await sleep(sleepTime.value)
+  loadList()
+}
+// 发送验证码
+const onSendSms = async () => {
+  if (!phone.value) {
+    message.error('请先输入手机号')
+    return
+  }
+  const res = await request({
+    url: 'https://app-api.mayi.art/api/user/login',
+    method: 'POST',
+    data: { account: phone.value, password: password.value },
+  })
+  if (res.code === 1) {
+    setCookie('token', res?.data?.userinfo?.token)
+    message.success('登录成功')
+    isLogin.value = true
+  }
+}
+
+// 登录
 const onLogin = async () => {
-  console.log('登录', phone.value)
   if (!phone.value) {
     message.error('请输入手机号')
     return
@@ -106,10 +136,23 @@ const onLogin = async () => {
     data: { account: phone.value, password: password.value },
   })
   if (res.code === 1) {
-    newToken.value = res?.data?.userinfo?.token
     setCookie('token', res?.data?.userinfo?.token)
     message.success('登录成功')
     isLogin.value = true
+  }
+
+  // 登录后获取用户钱包信息
+  const res1 = await request({
+    url: 'https://app-api.mayi.art/api/user/getUserInfo',
+    method: 'POST',
+    headers: {
+      token: getCookie('token'),
+      Authorization: `Bearer ${getCookie('token')}`,
+    },
+  })
+  if (res1.code === 1) {
+    res1?.data?.huifu_account && incomeTypeArr.push('huifu')
+    res1?.data?.yibao_status && incomeTypeArr.push('yibao')
   }
 }
 
@@ -130,145 +173,118 @@ const onFindGoods = async () => {
   }
 }
 
-// 自动定时器
-let interval = null
-
 const onStop = () => {
-  isLoading.value = false
-  isStop.value = true
+  inStop.value = true
 }
 // 发起锁单
 const onSend = () => {
-  isStop.value = false
-  isSuccess.value = false
-
-  payUrl.value = ''
   if (!goodsId.value) {
     message.error('请输入藏品名称')
     return
   }
-  if (!incomeType.value) {
-    message.error('请输入您的钱包类型')
+  if (typeof Number(maxPrice.value) !== 'number' && maxPrice.value) {
+    message.error('输入的最高价格式错误')
     return
   }
-  if (typeof Number(minPrice.value) !== 'number' && minPrice.value) {
-    message.error('输入的最低价格式错误')
-    return
-  }
-
-  interval && clearInterval(interval)
-  interval = setInterval(() => {
-    currentPage.value = 1
-  }, 3000)
-
+  inStop.value = false
+  isSuccess.value = false
   loadList()
-  isLoading.value = true
 }
 
 // 请求列表
 const loadList = async () => {
-  if (isStop.value) return
-  const res = await request({
-    url: 'https://app-api.mayi.art/api/market/market/getMarketGoodsListByGoodsId',
-    method: 'POST',
-    headers: {
-      token: getCookie('token'),
-      Authorization: `Bearer ${getCookie('token')}`,
-    },
-    data: {
-      page: currentPage.value,
-      sort: 'price',
-      type: 2,
-      id: goodsId.value,
-      order: 'asc',
-    },
-  })
-  if (res.code === 0 && res.msg === '请先登录') {
-    message.error('请先登录')
-    return
-  }
-  if (res.code === 0) {
-    await sleep(sleepTime.value)
-    loadList()
-    return
-  }
-  // 是否查找到可锁单
-  if (res.data.list && res.data.list.length) {
-    try {
-      res.data.list.forEach(async (item, index) => {
-        const incomeTypes = incomeType.value === '易宝' ? 'yibao' : 'huifu'
-        if (flag.value) return
-        // item.income_type.includes(incomeTypes) &&
-        if (
-          item.status === 1 &&
-          item.income_type.includes(incomeTypes) &&
-          (item.price <= minPrice.value || !minPrice.value)
-        ) {
-          flag.value = true
-          currentPage.value = 1
-          console.log('找到了能付款的', item.id)
-          isLoading.value = false
-          onPayOrder(item.id)
-
-          throw new Error('error') // 退出循环
-        }
-        if (index === res.data.list.length - 1 && !flag.value) {
-          await sleep(sleepTime.value)
-          loadList()
-        }
-      })
-    } catch (error) {
-      console.log('找到了，结束循环')
+  isLoading.value = true
+  try {
+    const res = await request({
+      url: 'https://app-api.mayi.art/api/market/market/getMarketGoodsListByGoodsId',
+      method: 'POST',
+      headers: {
+        token: getCookie('token'),
+        Authorization: `Bearer ${getCookie('token')}`,
+      },
+      data: {
+        page: currentPage.value,
+        sort: 'price',
+        type: 2,
+        id: goodsId.value,
+        order: 'asc',
+      },
+    })
+    if (res.code === 0 && res.msg === '请先登录') {
+      message.error('请先登录')
+      isLoading.value = false
+      return
     }
-  } else if (res.data.list.length === 0) {
-    await sleep(sleepTime.value)
-    loadList()
+    if (res.code === 0) {
+      reloadList()
+      return
+    }
+    // 是否查找到可锁单
+    if (res.data.list && res.data.list.length) {
+      for (let index = 0; index < res.data.list.length; index++) {
+        const item = res.data.list[index]
+        // 找到能与当前钱包匹配的支付类型
+        const canPayType = incomeTypeArr.filter(iten => item.income_type.includes(iten))
+        if (
+          canPayType.length &&
+          item.status === 1 &&
+          (item.price <= maxPrice.value || !maxPrice.value)
+        ) {
+          console.log('找到了能付款的，尝试支付，id：', item.id)
+          currentPage.value = 1 // 重置页数
+          onPayOrder(item.id, canPayType)
+          return // 退出循环
+        }
+        // 如果循环到最后一个还没有，则递归再找一遍
+        if (index === res.data.list.length - 1) {
+          if (res.data.list.length === 10) {
+            currentPage.value++
+          } else {
+            currentPage.value = 1
+          }
+          reloadList()
+        }
+      }
+    } else {
+      // 如果没有数据，等待再重新执行
+      reloadList()
+    }
+  } catch (error) {
+    console.log('列表请求异常', error)
+    reloadList()
   }
 }
 
-const onPayOrder = async id => {
-  if (flag.value) {
-    flag.value = false // 重置
-    console.log('变量')
-    try {
-      const res = await request({
-        url: 'https://app-api.mayi.art/api/order/pay/CreateMarketOrder',
-        method: 'POST',
-        headers: {
-          token: getCookie('token'),
-          Authorization: `Bearer ${getCookie('token')}`,
-        },
-        data: {
-          market_goods_id: id,
-          pay_type: 4,
-          pay_way: incomeType.value === '易宝' ? 'yibao' : 'huifu',
-        },
-      })
-      // const res1 = await request({
-      //   url: 'https://app-api.mayi.art/api/order/pay/doPay',
-      //   method: 'POST',
-      //   headers: {
-      //     token: getCookie('token'),
-      //     Authorization: `Bearer ${getCookie('token')}`,
-      //   },
-      //   data: {
-      //     market_goods_id: id,
-      //     pay_type: 4,
-      //     pay_way: incomeType.value === '易宝' ? 'yibao' : 'huifu',
-      //   },
-      // })
-      if (res.code === 1) {
-        isSuccess.value = true
-        clearInterval(interval)
-      } else {
-        loadList()
-      }
-
-      // payUrl.value = res1?.returnurl
-    } catch (error) {
-      // 失败，继续轮询
-      loadList()
+const onPayOrder = async (id, income_type) => {
+  try {
+    const res1 = await request({
+      url: 'https://app-api.mayi.art/api/order/pay/CreateMarketOrder',
+      method: 'POST',
+      headers: {
+        token: getCookie('token'),
+        Authorization: `Bearer ${getCookie('token')}`,
+      },
+      data: {
+        market_goods_id: id,
+        pay_type: 4,
+        pay_way: income_type[0],
+      },
+    })
+    console.log('支付情况:', res1)
+    if (res1.code === 1) {
+      message.success('下单成功')
+      isSuccess.value = true
+      isLoading.value = false
+      return
     }
+    // 如果被锁了，或者异常，就重新来一遍
+    if (res1.code === 0 && (res1.msg === '该藏品已被锁定' || res1.msg === '操作太频繁')) {
+      reloadList()
+      return
+    }
+  } catch (error) {
+    console.log('支付出错了')
+    reloadList()
   }
 }
 </script>

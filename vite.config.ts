@@ -7,6 +7,7 @@ import { viteMockServe } from 'vite-plugin-mock'
 import path from 'path'
 
 export default defineConfig({
+  base: './',
   css: {
     preprocessorOptions: {
       less: {
