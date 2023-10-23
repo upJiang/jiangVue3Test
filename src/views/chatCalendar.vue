@@ -165,10 +165,10 @@ const sendMessage = async () => {
   userInput.value = ''
 
   try {
-    const apiKey = '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' // 替换为你的 OpenAI API 密钥
+    const apiKey = 'sk-wHLwya2nP2sYKTDkOSjOnipnebWc85V4T2fhj4915BdeC0rT' // 替换为你的 OpenAI API 密钥
     const prompt = message.text //用户输入的问题  要问的问题
 
-    const apiUrl = 'https://service-4ehw14uq-1310031712.usw.apigw.tencentcs.com/v1/chat/completions' //固定的地址，api模型
+    const apiUrl = 'https://api.chatanywhere.com.cn/v1/chat/completions' //固定的地址，api模型
     const headers = {
       'Content-Type': 'application/json', //请求头这里不用改
       Authorization: `Bearer ${apiKey}`, //一定要将变量apikey填写正确才可以请求到
