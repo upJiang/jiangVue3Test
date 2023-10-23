@@ -6,14 +6,14 @@ module.exports = {
     'selector-pseudo-class-no-unknown': [
       true,
       {
-        ignorePseudoClasses: ['global']
-      }
+        ignorePseudoClasses: ['global', 'deep'],
+      },
     ],
     'selector-pseudo-element-no-unknown': [
       true,
       {
-        ignorePseudoElements: ['v-deep']
-      }
+        ignorePseudoElements: ['v-deep'],
+      },
     ],
     'at-rule-no-unknown': [
       true,
@@ -28,9 +28,9 @@ module.exports = {
           'if',
           'each',
           'include',
-          'mixin'
-        ]
-      }
+          'mixin',
+        ],
+      },
     ],
     'no-empty-source': null,
     'named-grid-areas-no-invalid': null,
@@ -43,14 +43,14 @@ module.exports = {
     'rule-empty-line-before': [
       'always',
       {
-        ignore: ['after-comment', 'first-nested']
-      }
+        ignore: ['after-comment', 'first-nested'],
+      },
     ],
     'unit-no-unknown': [
       true,
       {
-        ignoreUnits: ['rpx']
-      }
+        ignoreUnits: ['rpx'],
+      },
     ],
     'order/order': [
       [
@@ -60,17 +60,17 @@ module.exports = {
         'declarations',
         {
           type: 'at-rule',
-          name: 'supports'
+          name: 'supports',
         },
         {
           type: 'at-rule',
-          name: 'media'
+          name: 'media',
         },
-        'rules'
+        'rules',
       ],
       {
-        severity: 'warning'
-      }
+        severity: 'warning',
+      },
     ],
     // 按照指定顺序排列
     'order/properties-order': [
@@ -213,14 +213,14 @@ module.exports = {
       'resize',
       'appearance',
       'user-select',
-
       'interpolation-mode',
       'direction',
       'marks',
       'page',
       'set-link-source',
       'unicode-bidi',
-      'speak'
-    ]
-  }
+      'speak',
+    ],
+  },
+  ignoreFiles: ['**/*.js', '**/*.jsx', '**/*.tsx', '**/*.ts'],
 }

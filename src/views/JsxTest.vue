@@ -13,6 +13,6 @@ export default {
         <p onclick={onclick}>点击 +1 </p>
       </>
     )
-  }
+  },
 }
 </script>
